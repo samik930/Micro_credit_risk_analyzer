@@ -1,4 +1,6 @@
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? process.env.REACT_APP_API_URL || 'https://mock-backend-fallback.com/api'
+  : 'http://localhost:8000/api';
 
 export interface User {
   id: number;
@@ -148,7 +150,7 @@ class ApiService {
 
   // Add new transaction
   async addTransaction(userId: number, transaction: any): Promise<any> {
-    const response = await fetch(`http://localhost:8000/add-transaction/${userId}`, {
+    const response = await fetch(`${API_BASE_URL.replace('/api', '')}/add-transaction/${userId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -164,7 +166,7 @@ class ApiService {
   }
 
   async clearTransactions(userId: number): Promise<any> {
-    const response = await fetch(`http://localhost:8000/clear-transactions/${userId}`, {
+    const response = await fetch(`${API_BASE_URL.replace('/api', '')}/clear-transactions/${userId}`, {
       method: 'DELETE',
     });
 
@@ -178,7 +180,7 @@ class ApiService {
   // Get user transactions
   async getUserTransactions(userId: number, limit: number = 20) {
     try {
-      const response = await fetch(`http://localhost:8000/transactions/${userId}?limit=${limit}`);
+      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/transactions/${userId}?limit=${limit}`);
       if (!response.ok) throw new Error('Failed to fetch transactions');
       return await response.json();
     } catch (error) {
@@ -203,7 +205,7 @@ class ApiService {
   // Get score history
   async getScoreHistory(userId: number, limit: number = 10) {
     try {
-      const response = await fetch(`http://localhost:8000/score-history/${userId}?limit=${limit}`);
+      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/score-history/${userId}?limit=${limit}`);
       if (!response.ok) throw new Error('Failed to fetch score history');
       return await response.json();
     } catch (error) {
@@ -218,7 +220,7 @@ class ApiService {
   // Get user credit score with dynamic scoring
   async getUserScore(userId: number) {
     try {
-      const response = await fetch(`http://localhost:8000/user-score/${userId}`);
+      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/user-score/${userId}`);
       if (!response.ok) throw new Error('Failed to fetch user score');
       return await response.json();
     } catch (error) {
@@ -248,3 +250,4 @@ class ApiService {
 }
 
 export const apiService = new ApiService();
+
