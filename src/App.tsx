@@ -6,7 +6,7 @@ import BorrowerPortal from './components/BorrowerPortal';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/Micro_credit_risk_analyzer">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/app" element={<MainApp />} />
